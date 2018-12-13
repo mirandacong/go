@@ -1222,10 +1222,13 @@ func (ctxt *Link) hostlink() {
 		argv = append(argv, "-Qunused-arguments")
 	}
 
-	const compressDWARF = "-Wl,--compress-debug-sections=zlib-gnu"
-	if ctxt.compressDWARF && linkerFlagSupported(argv[0], compressDWARF) {
-		argv = append(argv, compressDWARF)
-	}
+	// TODO (zhongming): This flag causes ld.lld to fail.  Issue tracked here:
+	//         https://github.com/golang/go/issues/27110
+	//         https://github.com/kubernetes/kubernetes/issues/71996
+	//const compressDWARF = "-Wl,--compress-debug-sections=zlib-gnu"
+	//if ctxt.compressDWARF && linkerFlagSupported(argv[0], compressDWARF) {
+	//argv = append(argv, compressDWARF)
+	//}
 
 	argv = append(argv, filepath.Join(*flagTmpdir, "go.o"))
 	argv = append(argv, hostobjCopy()...)
